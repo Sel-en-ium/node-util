@@ -1,0 +1,10 @@
+{
+  "name": "node-util",
+  "version": "0.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "mocha": "^3.x.x",
+    "should": "^11.x.x",
+    "sinon": "^1.x.x"
+  }
+}
