@@ -7,6 +7,7 @@
 * [isObject](#markdown-header-isObject)
 * [isEqual](#markdown-header-isEqual)
 * [merge](#markdown-header-merge)
+* [syncBarrier](#markdown-header-syncBarrier)
 
 #### doWhen
 param {function()} cond - should return truthy when the callback should be called  
@@ -46,3 +47,31 @@ returns {Object} obj1 with all of obj2 properties.
 
 Recursively merges two objects.
 
+#### syncBarrier
+param {number} syncCalls - The number of calls to "barrier" before we can proceed.  
+param {function(errs)} callback - Called after "barrier" has been called syncCalls number 
+of times. "errs" will contain an array of errors reported by the "barrier" calls.  
+returns {function(err)} barrier - Should be called by each asynchronous "thread".
+
+Used as a barrier to synchronize multiple asynchronous "threads".
+
+```
+var
+    barrier = syncBarrier(2, function (errs) {
+        console.log('2 runs of asyncFunc are all done!');
+    });
+    
+asyncFunc(function (err) {
+    console.log('finished asyncFunc');
+    barrier(err);
+});
+asyncFunc(function (err) {
+    console.log('finished asyncFunc');
+    barrier(err);
+});
+
+// Outputs:
+// finished asyncFunc
+// finished asyncFunc
+// 2 runs of asyncFunc are all done!
+```

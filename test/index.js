@@ -19,7 +19,11 @@
   });
 
   describe("utils", function () {
-
+    var
+      result;
+    beforeEach(function () {
+      result = undefined;
+    });
     describe('#doWhen', function () {
       var
         temp,
@@ -204,11 +208,6 @@
     });
 
     describe("#merge(obj1, obj2, untouched)", function () {
-      var 
-        result;
-      beforeEach(function () {
-        result = undefined;
-      });
       it('should exist', function () {
         should.exist(utils.merge);
         (typeof utils.merge).should.equal('function');
@@ -312,6 +311,73 @@
         JSON.stringify(result).should.equal(JSON.stringify(expected));
       });
     });
+
+    describe('#syncBarrier', function () {
+      var
+        barrier,
+        count;
+      beforeEach(function () {
+        count = undefined;
+      });
+      it('should exist', function () {
+        should.exist(utils.syncBarrier);
+        (typeof utils.syncBarrier).should.equal('function');
+        utils.syncBarrier.length.should.equal(2);
+      });
+      it('should return a function', function () {
+        result = utils.syncBarrier(1, function () {});
+        (typeof result).should.equal('function');
+        result.length.should.equal(1);
+      });
+      it('should call the callback immediately if the count is not a number', function (done) {
+        utils.syncBarrier(undefined, function (err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+      it('should call the callback immediately if the count is 0', function (done) {
+        utils.syncBarrier(0, function (err) {
+          should.not.exist(err);
+          done();
+        });
+      });
+      it('should not call the callback until the "barrier" has been called the required number of times', function (done) {
+        count = 3;
+        barrier = utils.syncBarrier(count, function (err) {
+          count.should.equal(0);
+          should.not.exist(err);
+          done();
+        });
+        while (count > 0) {
+          count -= 1;
+          barrier();
+        }
+      });
+      it('should put errors in an array', function (done) {
+        var
+          count = 3,
+          sem = utils.syncBarrier(count, function (err) {
+            count.should.equal(0);
+            should.exist(err);
+            err.length.should.equal(3);
+            done();
+          });
+        while (count > 0) {
+          count -= 1;
+          sem(count);
+        }
+      });
+      it('should not add errs to err array if undefined or null', function (done) {
+        var
+          barrier = utils.syncBarrier(2, function (err) {
+            should.not.exist(err);
+            done();
+          });
+        barrier(null);
+        barrier(undefined);
+      });
+    });
+
 
   });
 

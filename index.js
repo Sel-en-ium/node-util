@@ -127,6 +127,32 @@
     return result;
   };
 
+  /**
+   * Used as a barrier to synchronize multiple asynchronous "threads".
+   *
+   * @param {number} syncCalls - The number of calls to "barrier" before we can proceed.
+   * @param {function(errs)} callback - Called after "barrier" has been called
+   * syncCalls number of times. "errs" will contain an array of errors reported
+   * by the "barrier" calls.
+   * @returns {function(err)} barrier - Should be called by each asynchronous "thread".
+   */
+  utils.syncBarrier = function (syncCalls, callback) {
+    if (!utils.isNumber(syncCalls) || syncCalls <= 0) {
+      return callback();
+    }
+    var errors = [];
+    return function (err) {
+      if (err !== undefined && err !== null) {
+        errors.push(err);
+      }
+      syncCalls -= 1;
+      if (syncCalls === 0 && callback) {
+        errors = errors.length ? errors : undefined;  // If no errors returned undefined rather than empty string.
+        callback(errors);
+      }
+    };
+  };
+
   module.exports = utils;
 
 }());
