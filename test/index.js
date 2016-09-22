@@ -24,6 +24,7 @@
     beforeEach(function () {
       result = undefined;
     });
+
     describe('#doWhen', function () {
       var
         temp,
@@ -126,7 +127,36 @@
       });
     });
 
-    describe('#isNumber', function () {
+    describe('#isEqual(obj1, obj2)', function () {
+      it('should exist', function () {
+        should.exist(utils.isEqual);
+        (typeof utils.isEqual).should.equal('function');
+        utils.isEqual.length.should.equal(2);
+      });
+      it('should return false for non-matching non-objects', function () {
+        utils.isEqual('9', 9).should.equal(false);
+      });
+      it('should return true for matching non-objects', function () {
+        utils.isEqual(9, 9).should.equal(true);
+        utils.isEqual('9', '9').should.equal(true);
+      });
+      it('should return false for non-matching objects', function () {
+        utils.isEqual({}, {1: 1}).should.equal(false);
+        utils.isEqual({1: 1}, {}).should.equal(false);
+        utils.isEqual({1: 1}, {1: '1'}).should.equal(false);
+        utils.isEqual({1: [1]}, {1: []}).should.equal(false);
+        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'D'}}).should.equal(false);
+      });
+      it('should return true for matching objects', function () {
+        utils.isEqual({}, {}).should.equal(true);
+        utils.isEqual({1: 1}, {1: 1}).should.equal(true);
+        utils.isEqual({1: 1}, {'1': 1}).should.equal(true);
+        utils.isEqual({1: [1]}, {1: [1]}).should.equal(true);
+        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'b'}}).should.equal(true);
+      });
+    });
+
+    describe('#isNumber(val)', function () {
       it('should exist', function () {
         should.exist(utils.isNumber);
         (typeof utils.isNumber).should.equal('function');
@@ -178,32 +208,35 @@
       });
     });
 
-    describe('#isEqual(obj1, obj2)', function () {
+    describe('#isString(val)', function () {
       it('should exist', function () {
-        should.exist(utils.isEqual);
-        (typeof utils.isEqual).should.equal('function');
-        utils.isEqual.length.should.equal(2);
+        should.exist(utils.isString);
+        (typeof utils.isString).should.equal('function');
+        utils.isString.length.should.equal(1);
       });
-      it('should return false for non-matching non-objects', function () {
-        utils.isEqual('9', 9).should.equal(false);
+      it('should return false for NaN', function () {
+        utils.isString(Number.NaN).should.equal(false);
       });
-      it('should return true for matching non-objects', function () {
-        utils.isEqual(9, 9).should.equal(true);
-        utils.isEqual('9', '9').should.equal(true);
+      it('should return false for integers', function () {
+        utils.isString(0).should.equal(false);
       });
-      it('should return false for non-matching objects', function () {
-        utils.isEqual({}, {1: 1}).should.equal(false);
-        utils.isEqual({1: 1}, {}).should.equal(false);
-        utils.isEqual({1: 1}, {1: '1'}).should.equal(false);
-        utils.isEqual({1: [1]}, {1: []}).should.equal(false);
-        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'D'}}).should.equal(false);
+      it('should return false for floats', function () {
+        utils.isString(0.123).should.equal(false);
       });
-      it('should return true for matching objects', function () {
-        utils.isEqual({}, {}).should.equal(true);
-        utils.isEqual({1: 1}, {1: 1}).should.equal(true);
-        utils.isEqual({1: 1}, {'1': 1}).should.equal(true);
-        utils.isEqual({1: [1]}, {1: [1]}).should.equal(true);
-        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'b'}}).should.equal(true);
+      it('should return false for negative numbers', function () {
+        utils.isString(-0.123).should.equal(false);
+      });
+      it('should return false for functions', function () {
+        utils.isString(function () {}).should.equal(false);
+      });
+      it('should return false for objects', function () {
+        utils.isString({}).should.equal(false);
+      });
+      it('should return false for Arrays', function () {
+        utils.isString([]).should.equal(false);
+      });
+      it('should return true for strings', function () {
+        utils.isString('9').should.equal(true);
       });
     });
 
@@ -312,7 +345,7 @@
       });
     });
 
-    describe('#syncBarrier', function () {
+    describe('#syncBarrier(syncCalls, callback)', function () {
       var
         barrier,
         count;

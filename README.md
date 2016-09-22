@@ -3,9 +3,10 @@
 * [doWhen](#markdown-header-doWhen)
 * [forEach](#markdown-header-foreach)
 * [isArray](#markdown-header-isArray)
+* [isEqual](#markdown-header-isEqual)
 * [isNumber](#markdown-header-isNumber)
 * [isObject](#markdown-header-isObject)
-* [isEqual](#markdown-header-isEqual)
+* [isString](#markdown-header-isString)
 * [merge](#markdown-header-merge)
 * [syncBarrier](#markdown-header-syncBarrier)
 
@@ -25,6 +26,11 @@ Calls the callback for each entry in an array / keys of an object
 param {*} val  
 returns {boolean} - true if val is an Array
 
+#### isEqual
+param {*} var1  
+param {*} var2  
+returns {boolean} - true if the variables have the same value. It recursively checks Objects' keys+values and stringify's the rest for comparison.
+
 #### isNumber  
 param {*} val  
 returns {boolean} - true if val is a finite number. (int, float, negative)
@@ -33,11 +39,9 @@ returns {boolean} - true if val is a finite number. (int, float, negative)
 param {*} val  
 returns {boolean} - true if val is an Object.
 
-#### isEqual
-param {*} var1  
-param {*} var2  
-returns {boolean} - true if the variables have the same value.  
-It recursively checks Objects and stringify's the rest for comparison.
+#### isString
+param {*} val  
+returns {boolean} - true if val is a string.
 
 #### merge
 param {Object} obj1 - Acts as the base object. It may have non-unique properties overwritten.  

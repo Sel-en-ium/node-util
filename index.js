@@ -52,24 +52,6 @@
   };
 
   /**
-   * Returns true if val is a finite number. (int, float, negative)
-   * @param {*} val
-   * @returns {boolean} - true if val is a number
-   */
-  utils.isNumber = function (val) {
-    return Number.isFinite(val);
-  };
-
-  /**
-   * Returns true if val is an Object.
-   * @param {*} val
-   * @returns {boolean} - true if val is an Object
-   */
-  utils.isObject = function (val) {
-    return Object.prototype.toString.call(val) === '[object Object]';
-  };
-
-  /**
    * Recursively checks if 2 variables are the same
    * @param {*} var1
    * @param {*} var2
@@ -92,6 +74,33 @@
       return JSON.stringify(var1) === JSON.stringify(var2);
     }
     return true;
+  };
+
+  /**
+   * Returns true if val is a finite number. (int, float, negative)
+   * @param {*} val
+   * @returns {boolean} - true if val is a number
+   */
+  utils.isNumber = function (val) {
+    return Number.isFinite(val);
+  };
+
+  /**
+   * Returns true if val is an Object.
+   * @param {*} val
+   * @returns {boolean} - true if val is an Object
+   */
+  utils.isObject = function (val) {
+    return Object.prototype.toString.call(val) === '[object Object]';
+  };
+
+  /**
+   * Returns true if val is a string.
+   * @param {*} val
+   * @returns {boolean} - true if val is a string
+   */
+  utils.isString = function (val) {
+    return Object.prototype.toString.call(val) === '[object String]';
   };
 
   /**
