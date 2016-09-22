@@ -38,6 +38,15 @@
   };
 
   /**
+   * Returns true if val is a finite number. (int, float, negative)
+   * @param {*} val
+   * @returns {boolean} - true if val is a number
+   */
+  utils.isNumber = function (val) {
+    return Number.isFinite(val);
+  };
+
+  /**
    * Returns true if val is an Object.
    * @param {*} val
    * @returns {boolean} - true if val is an Object

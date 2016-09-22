@@ -83,6 +83,27 @@
       });
     });
 
+    describe('#isNumber', function () {
+      it('should exist', function () {
+        (!!utils.isNumber).should.equal(true);
+      });
+      it('should return false for NaN', function () {
+        utils.isNumber(Number.NaN).should.equal(false);
+      });
+      it('should return false for strings', function () {
+        utils.isNumber('9').should.equal(false);
+      });
+      it('should return true for integers', function () {
+        utils.isNumber(0).should.equal(true);
+      });
+      it('should return true for floats', function () {
+        utils.isNumber(0.123).should.equal(true);
+      });
+      it('should return true for negative numbers', function () {
+        utils.isNumber(-0.123).should.equal(true);
+      });
+    });
+
     describe('#isObject(val)', function () {
       it('should exist', function () {
         (!!utils.isObject).should.equal(true);
