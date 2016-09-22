@@ -55,6 +55,31 @@
     return Object.prototype.toString.call(val) === '[object Object]';
   };
 
+  /**
+   * Recursively checks if 2 variables are the same
+   * @param {*} var1
+   * @param {*} var2
+   * @returns {boolean} - true if the variables are the same
+   */
+  utils.isEqual = function (var1, var2) {
+    if (utils.isObject(var1) && utils.isObject(var2)) {
+      var
+        i,
+        key,
+        keys = [];
+      keys = keys.concat(Object.keys(var1), Object.keys(var2));
+      for (i in keys) {
+        key = keys[i];
+        if (!utils.isEqual(var1[key], var2[key])) {
+          return false;
+        }
+      }
+    } else {
+      return JSON.stringify(var1) === JSON.stringify(var2);
+    }
+    return true;
+  };
+
   module.exports = utils;
 
 }());

@@ -133,6 +133,35 @@
       });
     });
 
+    describe('#isEqual(obj1, obj2)', function () {
+      it('should exist', function () {
+        (!!utils.isEqual).should.equal(true);
+        (typeof utils.isEqual).should.equal('function');
+        utils.isEqual.length.should.equal(2);
+      });
+      it('should return false for non-matching non-objects', function () {
+        utils.isEqual('9', 9).should.equal(false);
+      });
+      it('should return true for matching non-objects', function () {
+        utils.isEqual(9, 9).should.equal(true);
+        utils.isEqual('9', '9').should.equal(true);
+      });
+      it('should return false for non-matching objects', function () {
+        utils.isEqual({}, {1: 1}).should.equal(false);
+        utils.isEqual({1: 1}, {}).should.equal(false);
+        utils.isEqual({1: 1}, {1: '1'}).should.equal(false);
+        utils.isEqual({1: [1]}, {1: []}).should.equal(false);
+        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'D'}}).should.equal(false);
+      });
+      it('should return true for matching objects', function () {
+        utils.isEqual({}, {}).should.equal(true);
+        utils.isEqual({1: 1}, {1: 1}).should.equal(true);
+        utils.isEqual({1: 1}, {'1': 1}).should.equal(true);
+        utils.isEqual({1: [1]}, {1: [1]}).should.equal(true);
+        utils.isEqual({1: {b: 'b', c: 'c'}}, {1: {c: 'c', b: 'b'}}).should.equal(true);
+      });
+    });
+
   });
 
 }());
