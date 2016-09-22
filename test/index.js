@@ -20,6 +20,40 @@
 
   describe("utils", function () {
 
+    describe("#forEach()", function () {
+      var
+        calls;
+      beforeEach(function () {
+        calls = 0;
+      });
+      it("should iterate over an array", function () {
+        utils.forEach(['val1', 'val2'], function (index, value) {
+          index.should.equal(calls);
+          value.should.match(/val/);
+          calls += 1;
+        });
+        calls.should.equal(2);
+      });
+      it("should iterate over an object's keys", function () {
+        utils.forEach({key1: 'val1', key2: 'val2'}, function (index, value) {
+          index.should.match(/key/);
+          value.should.match(/val/);
+          calls += 1;
+        });
+        calls.should.equal(2);
+      });
+      it("should not call callback if passed undefined", function () {
+        utils.forEach(undefined, function (index, value) {
+          should.not.exist('should not get here');
+        });
+      });
+      it("should not call callback if passed null", function () {
+        utils.forEach(null, function (index, value) {
+          should.not.exist('should not get here');
+        });
+      });
+    });
+
     describe('#isArray(val)', function () {
       it('should exist', function () {
         (!!utils.isArray).should.equal(true);
