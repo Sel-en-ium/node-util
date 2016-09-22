@@ -20,11 +20,50 @@
 
   describe("utils", function () {
 
+    describe('#doWhen', function () {
+      var
+        temp,
+        truthy,
+        condCalls,
+        cond;
+      beforeEach(function () {
+        temp = undefined;
+        truthy = false;
+        condCalls = 0;
+        cond = function () {
+          condCalls += 1;
+          return truthy;
+        }
+      });
+      it('should exist', function () {
+        should.exist(utils.doWhen);
+        (typeof utils.doWhen).should.equal('function');
+        utils.doWhen.length.should.equal(2);
+      });
+      it('should wait until the condition becomes true', function (done) {
+        utils.doWhen(cond, function () {
+          condCalls.should.greaterThan(1);
+          temp.should.equal('it waited!');
+          done();
+        });
+
+        setTimeout(function () {
+          temp = 'it waited!';
+          truthy = true;
+        }, 50);
+      });
+    });
+
     describe("#forEach()", function () {
       var
         calls;
       beforeEach(function () {
         calls = 0;
+      });
+      it('should exist', function () {
+        should.exist(utils.forEach);
+        (typeof utils.forEach).should.equal('function');
+        utils.forEach.length.should.equal(2);
       });
       it("should iterate over an array", function () {
         utils.forEach(['val1', 'val2'], function (index, value) {
@@ -56,7 +95,7 @@
 
     describe('#isArray(val)', function () {
       it('should exist', function () {
-        (!!utils.isArray).should.equal(true);
+        should.exist(utils.isArray);
         (typeof utils.isArray).should.equal('function');
         utils.isArray.length.should.equal(1);
       });
@@ -85,7 +124,9 @@
 
     describe('#isNumber', function () {
       it('should exist', function () {
-        (!!utils.isNumber).should.equal(true);
+        should.exist(utils.isNumber);
+        (typeof utils.isNumber).should.equal('function');
+        utils.isNumber.length.should.equal(1);
       });
       it('should return false for NaN', function () {
         utils.isNumber(Number.NaN).should.equal(false);
@@ -106,7 +147,7 @@
 
     describe('#isObject(val)', function () {
       it('should exist', function () {
-        (!!utils.isObject).should.equal(true);
+        should.exist(utils.isObject);
         (typeof utils.isObject).should.equal('function');
         utils.isObject.length.should.equal(1);
       });
@@ -135,7 +176,7 @@
 
     describe('#isEqual(obj1, obj2)', function () {
       it('should exist', function () {
-        (!!utils.isEqual).should.equal(true);
+        should.exist(utils.isEqual);
         (typeof utils.isEqual).should.equal('function');
         utils.isEqual.length.should.equal(2);
       });
@@ -162,11 +203,16 @@
       });
     });
 
-    describe("#merge()", function () {
+    describe("#merge(obj1, obj2, untouched)", function () {
       var 
         result;
       beforeEach(function () {
         result = undefined;
+      });
+      it('should exist', function () {
+        should.exist(utils.merge);
+        (typeof utils.merge).should.equal('function');
+        utils.merge.length.should.equal(3);
       });
       it("obj2 does not exist", function () {
         var
@@ -222,7 +268,7 @@
 
         JSON.stringify(obj1).should.equal(original);
       });
-      it.only("should not link to obj2", function () {
+      it("should not link to obj2", function () {
         var
           obj1 = {key1: 1},
           obj2 = {key1: {key2: {key3: {key4: 4}}}},

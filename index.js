@@ -6,6 +6,20 @@
     utils = {};
 
   /**
+   * Calls the callback when cond evaluates to a truthy value
+   * @param {function()} cond - should return truthy when the callback should be called
+   * @param {function()} callback
+   */
+  utils.doWhen = function (cond, callback) {
+    var interval = setInterval(function () {
+      if (cond()) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 0);
+  };
+
+  /**
    * Calls the callback for each entry in an array / keys of an object
    *
    * @param {object} obj - The object/array to iterate through

@@ -1,10 +1,18 @@
 # node-util #
 
+* [doWhen](#markdown-header-doWhen)
 * [forEach](#markdown-header-foreach)
 * [isArray](#markdown-header-isArray)
 * [isNumber](#markdown-header-isNumber)
 * [isObject](#markdown-header-isObject)
 * [isEqual](#markdown-header-isEqual)
+* [merge](#markdown-header-merge)
+
+#### doWhen
+param {function()} cond - should return truthy when the callback should be called  
+param {function()} callback
+
+Calls the callback when cond evaluates to a truthy value
 
 #### forEach
 param {object} obj - The object/array to iterate through  
