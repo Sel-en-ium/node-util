@@ -8,7 +8,7 @@
   /**
    * Calls the callback for each entry in an array / keys of an object
    *
-   * @param {object} obj - The object or array to iterate through
+   * @param {object} obj - The object/array to iterate through
    * @param callback(index, obj[index])
    */
   utils.forEach = function (obj, callback) {
