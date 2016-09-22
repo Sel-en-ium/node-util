@@ -28,7 +28,13 @@ returns {boolean} - true if val is an Object.
 param {*} var1  
 param {*} var2  
 returns {boolean} - true if the variables have the same value.  
-It recursively checks Objects and stringifies the rest for comparison.
+It recursively checks Objects and stringify's the rest for comparison.
 
-Recursively checks if 2 variables are the same.
+#### merge
+param {Object} obj1 - Acts as the base object. It may have non-unique properties overwritten.  
+param {Object} obj2 - Object whose properties will be added to obj1.  
+param {boolean} untouched - If true, don't modify obj1.  
+returns {Object} obj1 with all of obj2 properties.
+
+Recursively merges two objects.
 

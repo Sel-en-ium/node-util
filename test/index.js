@@ -162,6 +162,111 @@
       });
     });
 
+    describe("#merge()", function () {
+      var 
+        result;
+      beforeEach(function () {
+        result = undefined;
+      });
+      it("obj2 does not exist", function () {
+        var
+          obj = {key3: 3, key4: 4},
+          expected = {key3: 3, key4: 4};
+        result = utils.merge(obj, undefined);
+
+        JSON.stringify(expected).should.equal(JSON.stringify(result));
+      });
+      it("obj1 does not exist", function () {
+        var
+          obj = {key3: 3, key4: 4},
+          expected = {key3: 3, key4: 4};
+        result = utils.merge(undefined, obj);
+
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+      it("should return an object with all key-vals from both objs if all unique keys", function () {
+        var
+          obj1 = {key1: 1, key2: 2},
+          obj2 = {key3: 3, key4: 4},
+          expected = {key1: 1, key2: 2, key3: 3, key4: 4};
+        result = utils.merge(obj1, obj2);
+
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+      it("should overwrite the values non-unique values of the first object", function () {
+        var
+          obj1 = {key1: 1, key2: 2},
+          obj2 = {key2: 3333, key4: 4},
+          expected = {key1: 1, key2: 3333, key4: 4};
+        result = utils.merge(obj1, obj2);
+
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+      it("should apply changes in-place to obj1", function () {
+        var
+          obj1 = {key: 1},
+          original = JSON.stringify(obj1),
+          obj2 = {key: 2};
+
+        utils.merge(obj1, obj2);
+
+        JSON.stringify(obj1).should.not.equal(original);
+      });
+      it("should not apply changes to obj1", function () {
+        var
+          obj1 = {key: 1},
+          original = JSON.stringify(obj1),
+          obj2 = {key: 2};
+
+        utils.merge(obj1, obj2, true);
+
+        JSON.stringify(obj1).should.equal(original);
+      });
+      it.only("should not link to obj2", function () {
+        var
+          obj1 = {key1: 1},
+          obj2 = {key1: {key2: {key3: {key4: 4}}}},
+          original = JSON.stringify(obj2);
+        result = utils.merge(obj1, obj2);
+        result.key1.key2.key3 = 'blah';
+        JSON.stringify(obj2).should.equal(original);
+      });
+      it("should not clobber nested values", function () {
+        var
+          obj1 = {key1: 1},
+          obj2 = {key2: {key3: {key4: 4}}},
+          expected = {key1: 1, key2: {key3: {key4: 4}}};
+        result = utils.merge(obj1, obj2);
+
+        JSON.stringify(expected).should.equal(JSON.stringify(result));
+      });
+      it("should return an object identical to obj2 if obj2 is nested deeper", function () {
+        var
+          obj1 = {},
+          obj2 = {key: {}},
+          expected = {key: {}};
+        result = utils.merge(obj1, obj2);
+
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+      it("should not fail if obj2 is nested way deeper", function () {
+        var
+          obj1 = {key1: 1},
+          obj2 = {key1: {key2: {key3: {key4: 4}}}},
+          expected = {key1: {key2: {key3: {key4: 4}}}};
+        result = utils.merge(obj1, obj2);
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+      it("should return an object identical to obj2 (when obj2 has nulls)", function () {
+        var
+          obj1 = {key1: 1},
+          obj2 = {key1: null},
+          expected = {key1: null};
+        result = utils.merge(obj1, obj2);
+        JSON.stringify(result).should.equal(JSON.stringify(expected));
+      });
+    });
+
   });
 
 }());

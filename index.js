@@ -80,6 +80,40 @@
     return true;
   };
 
+  /**
+   * Recursively merges two objects.
+   *
+   * @param {Object} obj1 - Acts as the base object. It may have non-unique properties overwritten.
+   * @param {Object} obj2 - Object whose properties will be added to obj1.
+   * @param {boolean} untouched - If true, don't modify obj1.
+   * @returns {Object} obj1 with all of obj2 properties.
+   */
+  utils.merge = function (obj1, obj2, untouched) {
+    obj1 = obj1 || {};
+
+    var
+      result;
+
+    if (untouched) {
+      result = JSON.parse(JSON.stringify(obj1));
+    } else {
+      result = obj1;
+    }
+
+    // Apply obj2 properties
+    utils.forEach(obj2, function (key, val) {
+      if (utils.isObject(val) && utils.isObject(result[key])) {
+        // merge the sub object
+        result[key] = utils.merge(result[key], val);
+      } else {
+        result[key] = JSON.parse(JSON.stringify(val));
+      }
+    });
+
+    return result;
+  };
+
   module.exports = utils;
 
 }());
+
