@@ -19,6 +19,7 @@
   });
 
   describe("utils", function () {
+  this.timeout(3000);
     var
       result;
     beforeEach(function () {
@@ -408,6 +409,29 @@
           });
         barrier(null);
         barrier(undefined);
+      });
+      it('should not conflict if multiple barriers are in use', function (done) {
+        var
+          barrier1,
+          barrier2,
+          barrier3;
+        barrier1 = utils.syncBarrier(2, function (err) {
+          should.not.exist(err);
+          barrier3();
+        }),
+        barrier2 = utils.syncBarrier(2, function (err) {
+          should.not.exist(err);
+          barrier3();
+        }),
+        barrier3 = utils.syncBarrier(2, function (err) {
+          should.not.exist(err);
+          done();
+        });
+
+        barrier1();
+        barrier2();
+        barrier1();
+        barrier2();
       });
     });
 
