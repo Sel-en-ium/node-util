@@ -146,7 +146,10 @@
    * @returns {function(err)} barrier - Should be called by each asynchronous "thread".
    */
   utils.syncBarrier = function (syncCalls, callback) {
-    if (!utils.isNumber(syncCalls) || syncCalls <= 0) {
+    if (!utils.isNumber(syncCalls) || syncCalls !== parseInt(syncCalls)) {
+      throw new Error('syncCalls must be an integer.');
+    }
+    if (syncCalls <= 0) {
       return callback();
     }
     var errors = [];

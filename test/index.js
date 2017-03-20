@@ -363,11 +363,29 @@
         (typeof result).should.equal('function');
         result.length.should.equal(1);
       });
-      it('should call the callback immediately if the count is not a number', function (done) {
-        utils.syncBarrier(undefined, function (err) {
-          should.not.exist(err);
+      it('should throw an error if the count is not a number', function (done) {
+        try {
+          utils.syncBarrier(undefined, function (err) { });
+        } catch (e) {
+          should.exist(e);
           done();
-        });
+        }
+      });
+      it('should throw an error if the count is NaN', function (done) {
+        try {
+          utils.syncBarrier(NaN, function (err) { });
+        } catch (e) {
+          should.exist(e);
+          done();
+        }
+      });
+      it('should throw an error if the count is a float', function (done) {
+        try {
+          utils.syncBarrier(2.5, function (err) { });
+        } catch (e) {
+          should.exist(e);
+          done();
+        }
       });
       it('should call the callback immediately if the count is 0', function (done) {
         utils.syncBarrier(0, function (err) {
