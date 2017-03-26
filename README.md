@@ -4,6 +4,7 @@
 * [forEach](#markdown-header-foreach)
 * [isArray](#markdown-header-isArray)
 * [isEqual](#markdown-header-isEqual)
+* [isInteger](#markdown-header-isInteger)
 * [isNumber](#markdown-header-isNumber)
 * [isObject](#markdown-header-isObject)
 * [isString](#markdown-header-isString)
@@ -30,6 +31,10 @@ returns {boolean} - true if val is an Array
 param {*} var1  
 param {*} var2  
 returns {boolean} - true if the variables have the same value. It recursively checks Objects' keys+values and stringify's the rest for comparison.
+
+#### isNumber  
+param {*} val  
+returns {boolean} - true if val is an integer.  (Warning, will return true for integer-like floats: 1.0, 6.00, 15.0, etc)
 
 #### isNumber  
 param {*} val  

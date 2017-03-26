@@ -157,6 +157,29 @@
       });
     });
 
+    describe('#isInteger(val)', function () {
+      it('should exist', function () {
+        should.exist(utils.isInteger);
+        (typeof utils.isInteger).should.equal('function');
+        utils.isInteger.length.should.equal(1);
+      });
+      it('should return false for NaN', function () {
+        utils.isInteger(Number.NaN).should.equal(false);
+      });
+      it('should return false for strings', function () {
+        utils.isInteger('9').should.equal(false);
+      });
+      it('should return false for floats', function () {
+        utils.isInteger(1.1).should.equal(false);
+      });
+      it('should return true for integers', function () {
+        utils.isInteger(0).should.equal(true);
+      });
+      it('should return true for integer-like floats', function () {
+        utils.isInteger(-1.00, true).should.equal(true);
+      });
+    });
+
     describe('#isNumber(val)', function () {
       it('should exist', function () {
         should.exist(utils.isNumber);

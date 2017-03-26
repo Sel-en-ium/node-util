@@ -77,6 +77,20 @@
   };
 
   /**
+   * @param {*} val  
+   * @returns {boolean} - true if val is an integer.
+   */
+  utils.isInteger = function (val) {
+    if (!utils.isNumber(val)) {
+      return false;
+    }
+    if (val !== parseInt(val)) {
+      return false;
+    }
+    return true;
+  };
+
+  /**
    * Returns true if val is a finite number. (int, float, negative)
    * @param {*} val
    * @returns {boolean} - true if val is a number
@@ -146,7 +160,7 @@
    * @returns {function(err)} barrier - Should be called by each asynchronous "thread".
    */
   utils.syncBarrier = function (syncCalls, callback) {
-    if (!utils.isNumber(syncCalls) || syncCalls !== parseInt(syncCalls)) {
+    if (!utils.isInteger(syncCalls)) {
       throw new Error('syncCalls must be an integer.');
     }
     if (syncCalls <= 0) {
